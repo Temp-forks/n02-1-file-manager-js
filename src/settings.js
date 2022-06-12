@@ -9,7 +9,8 @@ export const messages = {
   currentPath: 'You are currently in',
   invalidInput: 'Invalid input',
   invalidUsername: 'Invalid username',
-  error: 'Operation failed'
+  error: 'Operation failed',
+  incorrectArguments: 'Please set up user correctly, type: "node src/index.js --username=USERNAME"',
 }
 
 export const commands = {

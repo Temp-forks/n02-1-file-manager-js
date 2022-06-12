@@ -1,63 +1,83 @@
-import { createReadStream, createWriteStream, existsSync } from 'fs';
+import {createReadStream, createWriteStream} from 'fs';
 import {resolve} from "path";
-import { createBrotliCompress, createBrotliDecompress } from 'zlib';
+import {createBrotliCompress, createBrotliDecompress} from 'zlib';
 
 import {messages, userParams} from "../../settings.js";
 
-export const compressFile = (file, compressedPath) => {
+export const compressFile = (file, compressedPath, callback) => {
   try {
     const filepath = resolve(userParams.currentPath, file);
-    if (!existsSync(filepath)) {
-        console.log(messages.error)
-        return;
-    }
     const targetPath = compressedPath.slice(-3) === '.br' ?
       resolve(userParams.currentPath, compressedPath) :
       resolve(userParams.currentPath, compressedPath + '.br');
 
     const readStream = createReadStream(filepath);
     const writeStream = createWriteStream(targetPath);
+    const compressStream = createBrotliCompress();
 
-    const compress = createBrotliCompress();
-    readStream.pipe(compress)
-      .on('error', handleStreamErr)
+    readStream
+      .on('error', handleStreamError)
+      .pipe(compressStream)
+      .on('error', handleStreamError)
       .pipe(writeStream)
-      .on('error', handleStreamErr)
+      .on('error', handleStreamError)
       .on('finish',() => {
+        readStream.close();
+        compressStream.close();
+        writeStream.close();
+
         console.log(`${file} successfully compressed. Compressed file's path is ${targetPath}`);
+
+        if(callback) {
+          callback();
+        }
       })
   } catch (err) {
-    console.log(messages.error)
+    handleStreamError();
   }
 }
 
 
-export const decompressFile = (file, decompressedPath) => {
+export const decompressFile = (filename, decompressedPath, callback) => {
   try {
-    const filepath = resolve(userParams.currentPath, file);
-    const targetPath = resolve(userParams.currentPath, decompressedPath);
-
-    if (!existsSync(filepath)) {
-      console.log(messages.error)
-      return;
-    }
+    const { filepath, targetPath } = resolvePaths(filename, decompressedPath);
 
     const readStream = createReadStream(filepath);
     const writeStream = createWriteStream(targetPath);
 
-    const decompress = createBrotliDecompress();
-    readStream.pipe(decompress)
-      .on('error', handleStreamErr)
+    const decompressStream = createBrotliDecompress();
+    readStream
+      .on('error', handleStreamError)
+      .pipe(decompressStream)
+      .on('error', handleStreamError)
       .pipe(writeStream)
-      .on('error', handleStreamErr)
+      .on('error', handleStreamError)
       .on('finish', () => {
-          console.log(`${file} successfully decompressed. Decompressed file's path is ${targetPath}`);
+        readStream.close();
+        decompressStream.close();
+        writeStream.close();
+
+        console.log(`${filename} successfully decompressed. Decompressed file's path is ${targetPath}`);
+
+        if(callback) {
+          callback();
+        }
+
       })
   } catch (err) {
-    console.log(messages.error)
+    handleStreamError();
   }
 }
 
-function handleStreamErr () {
-  console.log(messages.error)
+function resolvePaths(filename, path) {
+  const filepath = resolve(userParams.currentPath, filename);
+  const targetPath = resolve(userParams.currentPath, path);
+  return {
+    filepath,
+    targetPath
+  }
+}
+
+function handleStreamError() {
+  console.error(messages.error);
 }

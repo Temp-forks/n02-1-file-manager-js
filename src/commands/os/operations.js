@@ -4,20 +4,20 @@ import {printCPUS} from "./handleCommand.js";
 import {messages} from "../../settings.js";
 
 export const parseOS = (param) => {
-  switch (param.slice(2)) {
-    case 'EOL':
+  switch (param) {
+    case '--EOL':
       console.log(`Default system End-Of-Line: ${JSON.stringify(EOL)}.`);
       break;
-    case 'cpus':
+    case '--cpus':
       printCPUS()
       break;
-    case 'homedir':
+    case '--homedir':
       console.log(`Homedir is ${homedir()}.`);
       break;
-    case 'username':
+    case '--username':
       console.log(`System username is ${userInfo().username}.`);
       break;
-    case 'architecture':
+    case '--architecture':
       console.log(`CPU architecture is ${arch()}.`);
       break;
     default:

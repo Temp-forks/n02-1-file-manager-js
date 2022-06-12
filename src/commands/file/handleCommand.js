@@ -9,7 +9,7 @@ export const printFileContent = (file) => {
     const data = readFileSync(filepath, 'utf8');
     console.log(data);
   } catch (err) {
-    console.log(messages.error);
+    console.error(messages.error);
   }
 }
 
@@ -19,7 +19,7 @@ export const createFile = (file) => {
     openSync(filepath, 'w');
     console.log(`${file} successfully created!`);
   } catch (err) {
-    console.log(messages.error);
+    console.error(messages.error);
   }
 }
 
@@ -30,7 +30,7 @@ export const renameFile = (oldFile, newFile) => {
     renameSync(oldFilePath, newFilePath);
     console.log(`${oldFile} successfully renamed to ${newFile}!`);
   } catch (err) {
-    console.log(messages.error);
+    console.error(messages.error);
   }
 }
 
@@ -45,7 +45,7 @@ export const copyFile = (file, newDir) => {
     copyFileSync(filepath, newFilePath);
     console.log(`${file} successfully copied into ${newDir}!`);
   } catch (err) {
-    console.log(messages.error);
+    console.error(messages.error);
   }
 }
 
@@ -61,7 +61,7 @@ export const moveFile = (file, newDir) => {
     unlinkSync(filepath)
     console.log(`${file} successfully moved into ${newDir}!`);
   } catch (err) {
-    console.log(messages.error);
+    console.error(messages.error);
   }
 }
 
@@ -71,6 +71,6 @@ export const removeFile = (file) => {
     unlinkSync(filepath)
     console.log(`${file} successfully removed!`);
   } catch (err) {
-    console.log(messages.error);
+    console.error(messages.error);
   }
 }

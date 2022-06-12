@@ -11,52 +11,67 @@ import {
 import {calcHash} from "./commands/hash/handleCommand.js";
 import {compressFile, decompressFile} from "./commands/archive/handleCommand.js";
 import {parseOS} from "./commands/os/operations.js";
+import {printCurrentPath} from "./utils.js";
 
-export const parseOperation = async (operation) => {
-  switch (operation[0]) {
+export function parseOperation(operation) {
+  const [command, source, target] = operation;
+  console.log('');
+  switch (command) {
     case commands.up:
       goUpperDir();
+      printCurrentPath();
       break;
     case commands.cd:
-      goToFolder(operation[1]);
+      goToFolder(source);
+      printCurrentPath();
       break;
     case commands.ls:
-      printListOfDir()
+      printListOfDir();
+      printCurrentPath();
       break;
     case commands.cat:
-      printFileContent(operation[1]);
+      printFileContent(source);
+      printCurrentPath();
       break;
     case commands.add:
-      createFile(operation[1]);
+      createFile(source);
+      printCurrentPath();
       break;
     case commands.rn:
-      renameFile(operation[1], operation[2]);
+      renameFile(source, target);
+      printCurrentPath();
       break;
     case commands.cp:
-      copyFile(operation[1], operation[2]);
+      copyFile(source, target);
+      printCurrentPath();
       break;
     case commands.mv:
-      moveFile(operation[1], operation[2]);
+      moveFile(source, target);
+      printCurrentPath();
       break;
     case commands.rm:
-      removeFile(operation[1]);
+      removeFile(source);
+      printCurrentPath();
       break;
     case commands.os:
-      parseOS(operation.slice(1)[0] ?? '')
+      parseOS(source);
+      printCurrentPath();
       break;
     case commands.hash:
-      calcHash(operation[1]);
+      calcHash(source);
+      printCurrentPath();
       break;
     case commands.compress:
-      await compressFile(operation[1], operation[2]);
+      compressFile(source, target, printCurrentPath);
       break;
     case commands.decompress:
-      await decompressFile(operation[1], operation[2]);
+      decompressFile(source, target, printCurrentPath);
       break;
     case commands.exit:
-      process.exit();
+      process.exit(0);
       break;
     default:
-      console.log(messages.invalidInput);
+      console.error(messages.invalidInput);
+      printCurrentPath();
   }
 }

@@ -1,34 +1,46 @@
 import { homedir } from 'os';
 import { createInterface } from 'readline'
 import {messages, userParams} from "./settings.js";
-import {validateArgs, validateUsername} from "./validations.js";
+import {validateArgsLength, validateUsernameParameter} from "./validations.js";
 import { parseOperation } from "./operations.js";
 
-const main = async () => {
+function main({ directory, username }) {
+  userParams.username = username;
+  userParams.currentPath = directory;
+
   console.log(`${messages.welcome} ${userParams.username}!`);
   console.log(`${messages.currentPath} ${userParams.currentPath}`);
   const rl = createInterface({
     input: process.stdin,
     output: process.stdout
   });
-  rl.on('line', async (line) => {
-    console.log('')
-    await parseOperation(line.split(' '));
-    console.log(`${messages.currentPath} ${userParams.currentPath}`);
+
+  rl.on('line', (line) => {
+    parseOperation(line.split(' '));
   })
+
   process.on('exit', () => {
-    rl.close()
+    rl.close();
     console.log(`${messages.thank} ${userParams.username}!`)
   })
 }
 
-const init = () => {
-  let userParam;
-  userParams.currentPath = homedir()
-  validateArgs(process.argv);
-  [userParam, userParams.username] = process.argv.slice(2)[0].split('=');
-  validateUsername(userParam);
-  main().then()
+function init() {
+  const [key, value] = process.argv.slice(2)[0].split('=');
+
+  try {
+    validateArgsLength(process.argv.length);
+    validateUsernameParameter(key, value);
+  } catch (error) {
+    console.error(error.message);
+    console.error(messages.incorrectArguments);
+    process.exit(1);
+  }
+
+  main({
+    directory: homedir(),
+    username: value,
+  });
 }
 
-init()
+init();
