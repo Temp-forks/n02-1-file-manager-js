@@ -1,5 +1,6 @@
 import { dirname, resolve } from "path";
 import { readdirSync } from 'fs';
+
 import { userParams } from "../../settings.js";
 
 export const goUpperDir = () => {
