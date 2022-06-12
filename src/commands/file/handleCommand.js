@@ -28,7 +28,7 @@ export const renameFile = (oldFile, newFile) => {
     const oldFilePath = resolve(userParams.currentPath, oldFile);
     const newFilePath = resolve(userParams.currentPath, newFile);
     renameSync(oldFilePath, newFilePath);
-    console.log(`${oldFile} successfully renamed to ${newFile}`);
+    console.log(`${oldFile} successfully renamed to ${newFile}!`);
   } catch (err) {
     console.log(messages.error);
   }
@@ -43,7 +43,7 @@ export const copyFile = (file, newDir) => {
       mkdirSync(newDirPath, { recursive: true });
     }
     copyFileSync(filepath, newFilePath);
-    console.log(`${file} successfully copied into ${newDir}`);
+    console.log(`${file} successfully copied into ${newDir}!`);
   } catch (err) {
     console.log(messages.error);
   }
@@ -59,7 +59,7 @@ export const moveFile = (file, newDir) => {
     }
     copyFileSync(filepath, newFilePath);
     unlinkSync(filepath)
-    console.log(`${file} successfully moved into ${newDir}`);
+    console.log(`${file} successfully moved into ${newDir}!`);
   } catch (err) {
     console.log(messages.error);
   }
@@ -69,7 +69,7 @@ export const removeFile = (file) => {
   try {
     const filepath = resolve(userParams.currentPath, file);
     unlinkSync(filepath)
-    console.log(`${file} successfully removed`);
+    console.log(`${file} successfully removed!`);
   } catch (err) {
     console.log(messages.error);
   }

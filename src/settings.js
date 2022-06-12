@@ -5,7 +5,7 @@ export const userParams = {
 
 export const messages = {
   welcome: 'Welcome to the File Manager,',
-  thank: 'Than you for using File Manager, ',
+  thank: 'Thank you for using File Manager, ',
   currentPath: 'You are currently in',
   invalidInput: 'Invalid input',
   invalidUsername: 'Invalid username',

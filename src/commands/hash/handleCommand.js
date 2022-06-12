@@ -9,7 +9,7 @@ export const calcHash = (file) => {
     const filepath = resolve(userParams.currentPath, file);
     const data = readFileSync(filepath, "utf-8");
     const hash = createHash('md5').update(data).digest('hex');
-    console.log(`Hash of file is ${hash}`);
+    console.log(`Hash of file is ${hash}.`);
   } catch (err) {
     console.log(messages.error);
   }
