@@ -12,6 +12,7 @@ const main = async () => {
     output: process.stdout
   });
   rl.on('line', (line) => {
+    console.log('')
     parseOperation(line.split(' '));
     console.log(`${messages.currentPath} ${userParams.currentPath}`);
   })
