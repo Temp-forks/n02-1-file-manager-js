@@ -9,8 +9,9 @@ import {
   renameFile
 } from "./commands/file/handleCommand.js";
 import {calcHash} from "./commands/hash/handleCommand.js";
+import {compressFile, decompressFile} from "./commands/archive/handleCommand.js";
 
-export const parseOperation = (operation) => {
+export const parseOperation = async (operation) => {
   switch (operation[0]) {
     case commands.up:
       goUpperDir();
@@ -41,6 +42,12 @@ export const parseOperation = (operation) => {
       break;
     case commands.hash:
       calcHash(operation[1]);
+      break;
+    case commands.compress:
+      await compressFile(operation[1], operation[2]);
+      break;
+    case commands.decompress:
+      await decompressFile(operation[1], operation[2]);
       break;
     default:
       console.log(messages.error);

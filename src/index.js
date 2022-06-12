@@ -11,9 +11,9 @@ const main = async () => {
     input: process.stdin,
     output: process.stdout
   });
-  rl.on('line', (line) => {
+  rl.on('line', async (line) => {
     console.log('')
-    parseOperation(line.split(' '));
+    await parseOperation(line.split(' '));
     console.log(`${messages.currentPath} ${userParams.currentPath}`);
   })
   process.on('exit', () => {
