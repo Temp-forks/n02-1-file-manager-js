@@ -8,6 +8,7 @@ import {
   removeFile,
   renameFile
 } from "./commands/file/handleCommand.js";
+import {calcHash} from "./commands/hash/handleCommand.js";
 
 export const parseOperation = (operation) => {
   switch (operation[0]) {
@@ -37,6 +38,9 @@ export const parseOperation = (operation) => {
       break;
     case commands.rm:
       removeFile(operation[1]);
+      break;
+    case commands.hash:
+      calcHash(operation[1]);
       break;
     default:
       console.log(messages.error);
