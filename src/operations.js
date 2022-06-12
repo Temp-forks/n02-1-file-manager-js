@@ -10,6 +10,7 @@ import {
 } from "./commands/file/handleCommand.js";
 import {calcHash} from "./commands/hash/handleCommand.js";
 import {compressFile, decompressFile} from "./commands/archive/handleCommand.js";
+import {parseOS} from "./commands/os/operations.js";
 
 export const parseOperation = async (operation) => {
   switch (operation[0]) {
@@ -40,6 +41,9 @@ export const parseOperation = async (operation) => {
     case commands.rm:
       removeFile(operation[1]);
       break;
+    case commands.os:
+      parseOS(operation.slice(1)[0] ?? '')
+      break;
     case commands.hash:
       calcHash(operation[1]);
       break;
@@ -49,7 +53,10 @@ export const parseOperation = async (operation) => {
     case commands.decompress:
       await decompressFile(operation[1], operation[2]);
       break;
+    case commands.exit:
+      process.exit();
+      break;
     default:
-      console.log(messages.error);
+      console.log(messages.invalidInput);
   }
 }
